@@ -1,5 +1,6 @@
 * {
-  font-family: Pretendard, sans-serif;
+  font-family: "Mona-Sans", Pretendard, sans-serif;
+  color: #303030;
 }
 
 html, body, main, section {
@@ -37,21 +38,25 @@ section {
 
 #title {
   background-color: transparent;
-  color: white;
 }
 
 h1 {
   font-size: 72px;
-  font-family: Outfit;
+  font-family: "Mona-Sans";
 }
 
 h2 {
   font-size: 48px;
-  color: #26bfb3;
+  margin: 36px 0 24px;
+}
+
+h3 {
+  font-size: 36px;
+  margin: 30px 0 16px;
 }
 
 p {
-  color: #242424;
   font-size: 16px;
+  margin: 0 0 16px;
   line-height: 1.5;
 }
