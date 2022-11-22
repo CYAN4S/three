@@ -7,17 +7,28 @@ import {
   Clock,
   AmbientLight,
 } from "three";
+import meshes from "./scene/meshes";
 
-const body = document.getElementsByTagName("body")[0];
-body.addEventListener("mousemove", onMouseMove);
-let x = 0,
-  y = 0;
+let x = 0;
+let y = 0;
+
+window.addEventListener(
+  "devicemotion",
+  (ev) => {
+    x = ev.acceleration?.x ? ev.acceleration?.x / 100 : x;
+    y = ev.acceleration?.z ? ev.acceleration?.z / 100 : y;
+  },
+  true
+);
+
+// Add event
+window.addEventListener("mousemove", onMouseMove);
+
 function onMouseMove(ev: MouseEvent) {
   x = ev.x;
   y = ev.y;
 }
 
-import meshes from "./scene/meshes";
 const clock = new Clock();
 
 // Scene
@@ -80,13 +91,16 @@ function render() {
 
   const delta = clock.getDelta();
 
-  camera.position.z = lerp(camera.position.z, x / canvas.clientWidth - 0.5, delta);
-  camera.position.y = lerp(camera.position.y, y / canvas.clientHeight - 0.5, delta);
-
-  // console.log(x / canvas.clientWidth, y / canvas.clientHeight);
-  
-
-  //camera.rotateY(clock.getDelta() * 1);
+  camera.position.z = lerp(
+    camera.position.z,
+    x / canvas.clientWidth + 0.3 + 2.1 * (canvas.clientWidth / 1920),
+    delta
+  );
+  camera.position.y = lerp(
+    camera.position.y,
+    y / canvas.clientHeight - 0.5,
+    delta
+  );
 
   renderer.render(scene, camera);
 }
