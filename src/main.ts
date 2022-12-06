@@ -12,23 +12,22 @@ import meshes from "./scene/meshes";
 let x = 0;
 let y = 0;
 
-window.addEventListener(
-  "devicemotion",
-  (ev) => {
-    x = ev.rotationRate?.beta ? ev.rotationRate?.beta / 100 : x;
-    y = ev.rotationRate?.gamma ? ev.rotationRate?.gamma / 100 : y;
-  },
-  true
-);
-
 // Add event
+window.addEventListener("deviceorientation", onDeviceOrientation, true);
+
+function onDeviceOrientation(ev: DeviceOrientationEvent) {
+  x = ev.gamma ? ev.gamma / 180 : x;
+  y = ev.beta ? ev.beta / 180 : y;
+}
+
 window.addEventListener("mousemove", onMouseMove);
 
 function onMouseMove(ev: MouseEvent) {
-  x = ev.x;
-  y = ev.y;
+  x = ev.x / screen.width - 0.5;
+  y = ev.y / screen.height - 0.5;
 }
 
+// Clock
 const clock = new Clock();
 
 // Scene
@@ -62,7 +61,7 @@ meshes.forEach((mesh) => {
   scene.add(mesh);
 });
 
-// For Render
+// For render
 function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
   const canvas = renderer.domElement;
   const pixelRatio = window.devicePixelRatio;
@@ -75,6 +74,7 @@ function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
   return needResize;
 }
 
+// Smooth move
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t * 8;
 }
@@ -93,14 +93,10 @@ function render() {
 
   camera.position.z = lerp(
     camera.position.z,
-    x / canvas.clientWidth + 0.3 + 2.1 * (canvas.clientWidth / 1920),
+    x + 0.8 + 2.1 * (canvas.clientWidth / 1920),
     delta
   );
-  camera.position.y = lerp(
-    camera.position.y,
-    y / canvas.clientHeight - 0.5,
-    delta
-  );
+  camera.position.y = lerp(camera.position.y, y, delta);
 
   renderer.render(scene, camera);
 }
