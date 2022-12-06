@@ -15,8 +15,8 @@ let y = 0;
 window.addEventListener(
   "devicemotion",
   (ev) => {
-    x = ev.acceleration?.x ? ev.acceleration?.x : x;
-    y = ev.acceleration?.y ? ev.acceleration?.y : y;
+    x = ev.rotationRate?.beta ? ev.rotationRate?.beta / 100 : x;
+    y = ev.rotationRate?.gamma ? ev.rotationRate?.gamma / 100 : y;
   },
   true
 );
